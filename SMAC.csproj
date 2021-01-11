@@ -4,12 +4,21 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>data\SMAC.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="data\RigsofRodsLogo.png" />
     <None Remove="data\SimMonstersLogo.png" />
-    <None Remove="SMAC.ico" />
+    <None Remove="data\SMAC.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="src\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="src\App.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,13 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="App.xaml" />
+    <Page Include="src\App.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="data\RigsofRodsLogo.png" />
     <Resource Include="data\SimMonstersLogo.png" />
-    <Resource Include="SMAC.ico" />
+    <Resource Include="data\SMAC.ico" />
   </ItemGroup>
 
 </Project>

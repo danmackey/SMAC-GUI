@@ -26,7 +26,7 @@ namespace SMAC
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         public MainWindow()
         {
             DataContext = this;

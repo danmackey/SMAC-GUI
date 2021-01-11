@@ -16,7 +16,7 @@ namespace SMAC
         private readonly string _cfgFilePath;
         private List<string> _cfgFile;
         private readonly string _jsonSettingsFile = @".\settings.json";
-        
+
         public Settings settings;
 
         public Controller()
@@ -102,8 +102,8 @@ namespace SMAC
                 _cfgFile[enableRacesIndex] = _enableRaces;
 
                 File.WriteAllLines(_cfgFilePath, _cfgFile);
-            
-                string currentApiServerName = (settings.smApiServerActive ? "Sim-Monsters Anti Cheat": "Rigs of Rods API");
+
+                string currentApiServerName = (settings.smApiServerActive ? "Sim-Monsters Anti Cheat" : "Rigs of Rods API");
                 MessageBox.Show($"API Server changed to {currentApiServerName}.\nAPI and races have been enabled.", "Sim-Monsters Anti Cheat");
                 changesAppliedSuccessfully = true;
             }
