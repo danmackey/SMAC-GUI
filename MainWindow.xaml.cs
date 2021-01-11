@@ -1,28 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SMAC
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private readonly Controller controller;
+        private string _currentServerMessage;
+        public string CurrentServerMessage
+        {
+            get
+            {
+                return _currentServerMessage;
+            }
+            set
+            {
+                if (value != _currentServerMessage)
+                {
+                    _currentServerMessage = value;
+                    OnPropertyChanged("CurrentServerMessage");
+                }
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         public MainWindow()
         {
+            DataContext = this;
+            controller = new Controller();
+            GetCurrentServer();
             InitializeComponent();
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void GetCurrentServer()
+        {
+            bool isSMApiServer = controller.settings.smApiServerActive;
+            CurrentServerMessage = $"Currently Connected to: {(isSMApiServer ? "Sim-Monsters Anti Cheat" : "Rigs of Rods")}";
+        }
+
+        private void SetCurrentServer(bool isSMApiServer)
+        {
+            if (controller.SwitchServers(isSMApiServer))
+            {
+                CurrentServerMessage = $"Currently Connected to: {(isSMApiServer ? "Sim-Monsters Anti Cheat" : "Rigs of Rods")}";
+            }
+        }
+
+        private void btnSimMonsters_Click(object sender, RoutedEventArgs e)
+        {
+            SetCurrentServer(true);
+        }
+
+        private void btnRigsOfRods_Click(object sender, RoutedEventArgs e)
+        {
+            SetCurrentServer(false);
         }
     }
 }

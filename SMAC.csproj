@@ -6,4 +6,24 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="data\RigsofRodsLogo.png" />
+    <None Remove="data\SimMonstersLogo.png" />
+    <None Remove="SMAC.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="data\RigsofRodsLogo.png" />
+    <Resource Include="data\SimMonstersLogo.png" />
+    <Resource Include="SMAC.ico" />
+  </ItemGroup>
+
 </Project>
