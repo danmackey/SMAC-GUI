@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace SMAC
@@ -27,15 +27,21 @@ namespace SMAC
             try
             {
                 controller = new Controller();
-                controller.LoadSettingsFile();
+                if (controller.LoadSettingsFile())
+                {
+                    ProgressBarVisibility = Visibility.Hidden;
+                    OnPropertyChanged(nameof(ProgressBarVisibility));
+                    InitializeComponent();
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR: {ex}", "Sim-Monsters Anti Cheat");
+                Debug.WriteLine(ex);
+                ExceptionMessageBox(ex.Message);
                 Application.Current.Shutdown();
+                Close();
+                Environment.Exit(0);
             }
-
-            InitializeComponent();
         }
 
         /// <inheritdoc/>
@@ -44,8 +50,24 @@ namespace SMAC
         /// <summary>
         /// Gets the current server message displayed on GUI.
         /// </summary>
-        public string CurrentServerMessage => $"Currently Connected to: {(IsSmServerSelected ? "Sim-Monsters Anti Cheat" : "Rigs of Rods")}";
+        public string CurrentServerMessage => $"Connected to: {(IsSmServerSelected ? "Sim-Monsters Anti Cheat" : "Rigs of Rods")}";
 
+        /// <summary>
+        /// Gets the current server url to display on GUI.
+        /// </summary>
+        public string CurrentServerUrl => $"API Server URL: {controller.CurrentServerUrl}";
+
+        /// <summary>
+        /// Gets or sets the visibility of the progress bar.
+        /// </summary>
+        public Visibility ProgressBarVisibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of the progress bar.
+        /// </summary>
+        public int ProgressBarValue { get; set; }
+
+        /// <inheritdoc cref="SettingsJson.IsSmServerSelected"/>
         private bool IsSmServerSelected
         {
             get => controller.IsSmServerSelected;
@@ -62,6 +84,31 @@ namespace SMAC
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Shows progress bar to show that the API server was changed.
+        /// Runs asynchronously.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        private async Task ProgressBarComplete()
+        {
+            ProgressBarVisibility = Visibility.Visible;
+            OnPropertyChanged(nameof(ProgressBarVisibility));
+            for (int i = 0; i <= 20; i++)
+            {
+                ProgressBarValue = i * 5;
+                OnPropertyChanged(nameof(ProgressBarValue));
+                await Task.Delay(1);
+            }
+
+            ProgressBarVisibility = Visibility.Hidden;
+            OnPropertyChanged(nameof(ProgressBarVisibility));
+        }
+
+        /// <summary>
+        /// Attempts to set the current API server.
+        /// If the changes are applied to RoR.cfg, then settings.json is saved,
+        /// and the GUI is updated accordingly.
+        /// </summary>
         private void SetCurrentServer()
         {
             try
@@ -69,15 +116,21 @@ namespace SMAC
                 if (controller.ApplyConfigChanges())
                 {
                     controller.SaveSettingsFile();
+                    _ = ProgressBarComplete();
                     OnPropertyChanged(nameof(CurrentServerMessage));
+                    OnPropertyChanged(nameof(CurrentServerUrl));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR: {ex}", "Sim-Monsters Anti Cheat");
+                Debug.WriteLine(ex);
+                ExceptionMessageBox(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Attempts to open help page, which is the GitHub README.
+        /// </summary>
         private void OnHelpClick(object sender, RoutedEventArgs e)
         {
             Process openHelpPage = new Process();
@@ -89,20 +142,36 @@ namespace SMAC
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex}");
+                Debug.WriteLine(ex);
+                ExceptionMessageBox(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Sets the API Server to the Sim-Monsters API server.
+        /// </summary>
         private void OnSimMonstersClick(object sender, RoutedEventArgs e)
         {
             IsSmServerSelected = true;
             SetCurrentServer();
         }
 
+        /// <summary>
+        /// Sets the API Server to the Rigs of Rods API server.
+        /// </summary>
         private void OnRigsOfRodsClick(object sender, RoutedEventArgs e)
         {
             IsSmServerSelected = false;
             SetCurrentServer();
+        }
+
+        /// <summary>
+        /// Display <see cref="MessageBox"/> containing an exception message.
+        /// </summary>
+        /// <param name="message">Message to be displayed in <see cref="MessageBox"/>.</param>
+        private void ExceptionMessageBox(string message)
+        {
+            MessageBox.Show(message, "Sim-Monsters Anti Cheat");
         }
     }
 }

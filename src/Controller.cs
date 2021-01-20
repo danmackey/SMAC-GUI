@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Windows;
+﻿using System.IO;
 
 namespace SMAC
 {
@@ -32,24 +26,25 @@ namespace SMAC
             }
         }
 
-        /// <summary>
-        /// Gets or sets Sim-Monsters API Server URI.
-        /// </summary>
-        public string SmApiServer
-        {
-            get => settings.SmApiServer;
-
-            set => settings.SmApiServer = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the Sim-Monsters API Server is selected.
-        /// </summary>
+        /// <inheritdoc cref="SettingsJson.IsSmServerSelected"/>
         public bool IsSmServerSelected
         {
             get => settings.IsSmServerSelected;
 
             set => settings.IsSmServerSelected = value;
+        }
+
+        /// <summary>
+        /// Gets current server url.
+        /// </summary>
+        public string CurrentServerUrl => IsSmServerSelected ? SmApiServer : rorApiServer;
+
+        /// <inheritdoc cref="Settings.SmApiServer"/>
+        private string SmApiServer
+        {
+            get => settings.SmApiServer;
+
+            set => settings.SmApiServer = value;
         }
 
         /// <inheritdoc cref="Config.CheckConfigFile"/>
@@ -96,34 +91,6 @@ namespace SMAC
             }
 
             return false;
-
-            // bool isSuccessful = false;
-            // try
-            // {
-            //    isSuccessful = config.ApplyChanges(currentApiServer);
-            // }
-            // catch (FileNotFoundException ex)
-            // {
-            //    MessageBox.Show($"ERROR: Cannot read file\n{ex.Message}\nDo you have Rigs of Rods 2020.xx installed?", "Sim-Monsters Anti Cheat");
-            //    Debug.WriteLine(ex);
-            // }
-            // catch (DirectoryNotFoundException ex)
-            // {
-            //    MessageBox.Show($"ERROR: Cannot read directory\n{ex.Message}\nDo you have Rigs of Rods 2020.xx installed?", "Sim-Monsters Anti Cheat");
-            //    Debug.WriteLine(ex);
-            // }
-            // catch (RoRRunningException ex)
-            // {
-            //    MessageBox.Show("ERROR: Cannot apply changes while Rigs of Rods is open!\nClose Rigs of Rods before applying changes!", "Sim-Monsters Anti Cheat");
-            //    Debug.WriteLine(ex);
-            // }
-            // finally
-            // {
-            //    if (isSuccessful)
-            //    {
-            //        MessageBox.Show($"API Server changed to {currentApiServer}.\nAPI and races have been enabled.", "Sim-Monsters Anti Cheat");
-            //    }
-            // }
         }
 
         /// <inheritdoc cref="Settings.LoadSettingsFile()"/>
@@ -142,22 +109,12 @@ namespace SMAC
             }
 
             return false;
-
-            // if (!settings.LoadSettingsFile())
-            // {
-            //    MessageBox.Show("ERROR: Cannot read contents of settings.json.  Resetting to default.", "Sim-Monsters Anti Cheat");
-            // }
         }
 
         /// <inheritdoc cref="Settings.SaveSettingsFile()"/>
         public void SaveSettingsFile()
         {
             settings.SaveSettingsFile();
-
-            // if (settings.SaveSettingsFile())
-            // {
-            //    MessageBox.Show("Saved settings to settings.json", "Sim-Monsters Anti Cheat");
-            // }
         }
     }
 }

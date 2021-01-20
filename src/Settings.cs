@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
@@ -38,9 +39,7 @@ namespace SMAC
             set => settingsJson.SmApiServer = IsValidUri(value) ? value : smApiServer;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the Sim-Monsters API Server is selected.
-        /// </summary>
+        /// <inheritdoc cref="SettingsJson.IsSmServerSelected"/>
         public bool IsSmServerSelected
         {
             get => settingsJson.IsSmServerSelected;
@@ -91,6 +90,14 @@ namespace SMAC
             catch (FileNotFoundException)
             {
                 throw;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                CreateDefaultSettingsFile();
             }
 
             return false;

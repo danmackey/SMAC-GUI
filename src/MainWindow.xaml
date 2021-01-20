@@ -13,7 +13,7 @@
     ResizeMode="CanMinimize"
     mc:Ignorable="d">
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -27,6 +27,7 @@
         <Label
             Grid.Row="0"
             Grid.Column="0"
+            Margin="10"
             Content="Select API Server"
             FontSize="36" />
 
@@ -35,6 +36,7 @@
             Grid.Column="1"
             Width="24"
             Height="24"
+            Margin="10"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Click="OnHelpClick">
@@ -66,10 +68,25 @@
             </StackPanel>
         </Button>
 
-        <Label
+        <StatusBar
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Content="{Binding CurrentServerMessage, FallbackValue='Currently Connected to:'}" />
+            MaxHeight="30"
+            Margin="0"
+            Padding="0"
+            VerticalAlignment="Bottom">
+            <StatusBarItem Content="{Binding CurrentServerMessage, FallbackValue='Connected to:'}" />
+            <Separator />
+            <StatusBarItem Content="{Binding CurrentServerUrl, FallbackValue='API Server URL: '}" />
+            <Separator />
+            <StatusBarItem HorizontalAlignment="Right">
+                <ProgressBar
+                    Width="100"
+                    Height="12"
+                    Visibility="{Binding ProgressBarVisibility, FallbackValue='False'}"
+                    Value="{Binding ProgressBarValue, FallbackValue='50'}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

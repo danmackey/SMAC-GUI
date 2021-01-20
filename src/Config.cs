@@ -54,7 +54,7 @@ namespace SMAC
                 }
                 else
                 {
-                    throw new RoRRunningException("Cannot apply changes while Rigs of Rods is open\nClose Rigs of Rods before applying changes");
+                    throw new RoRRunningException("Cannot apply changes while Rigs of Rods is open!\nClose Rigs of Rods before applying changes!\n");
                 }
             }
             catch (FileNotFoundException)
@@ -84,12 +84,12 @@ namespace SMAC
                 }
                 else
                 {
-                    throw new FileNotFoundException($"File does not exist:\n{configPath}\\RoR.cfg\nDo you have Rigs of Rods 2020.xx installed?");
+                    throw new FileNotFoundException($"File does not exist:\n{configPath}\\RoR.cfg\n\nDo you have Rigs of Rods 2020.xx installed?\n");
                 }
             }
             else
             {
-                throw new DirectoryNotFoundException($"Directory does not exist:\n{configPath}\nDo you have Rigs of Rods 2020.xx installed?");
+                throw new DirectoryNotFoundException($"Directory does not exist:\n{configPath}\n\nDo you have Rigs of Rods 2020.xx installed?\n");
             }
         }
 

@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>resources\SMAC.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
+    <AssemblyName>Sim-Monsters Anti Cheat</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
