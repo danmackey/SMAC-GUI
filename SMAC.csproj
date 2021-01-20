@@ -1,16 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>data\SMAC.ico</ApplicationIcon>
+    <ApplicationIcon>resources\SMAC.ico</ApplicationIcon>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="data\RigsofRodsLogo.png" />
-    <None Remove="data\SimMonstersLogo.png" />
-    <None Remove="data\SMAC.ico" />
+    <None Remove="resources\Question_16x.svg" />
+    <None Remove="resources\RigsofRodsLogo.png" />
+    <None Remove="resources\SimMonstersLogo.png" />
+    <None Remove="resources\SMAC.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +24,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ErrorProne.NET.CoreAnalyzers" Version="0.3.0-beta.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.NET.Structs" Version="0.3.0-beta.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SharpVectors" Version="1.7.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.321">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="data\RigsofRodsLogo.png" />
-    <Resource Include="data\SimMonstersLogo.png" />
-    <Resource Include="data\SMAC.ico" />
+    <Resource Include="resources\Question_16x.svg" />
+    <Resource Include="resources\RigsofRodsLogo.png" />
+    <Resource Include="resources\SimMonstersLogo.png" />
+    <Resource Include="resources\SMAC.ico" />
   </ItemGroup>
-
 </Project>

@@ -1,134 +1,163 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows;
 
 namespace SMAC
 {
+    /// <summary>
+    /// Manages the <see cref="Config"/> and <see cref="Settings"/>.
+    /// </summary>
     public class Controller
     {
-        private readonly string _rorApiServer = "http://api.rigsofrods.org";
-        private readonly string _smApiServer = "http://35.222.111.224:3000";
-        private readonly string _enableOnlineApi = "Disable Online API=No";
-        private readonly string _enableRaces = "Races=Yes";
-        private readonly string _cfgFilePath;
-        private List<string> _cfgFile;
-        private readonly string _jsonSettingsFile = @".\settings.json";
+        private readonly string rorApiServer = "http://api.rigsofrods.org";
 
-        public Settings settings;
+        private readonly Config config;
 
+        private readonly Settings settings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Controller"/> class.
+        /// </summary>
         public Controller()
         {
-            string myDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string configPath = myDocumentsPath + @"\My Games\Rigs of Rods\config";
-            _cfgFilePath = configPath + @"\RoR.cfg";
+            config = new Config();
 
-            if (Directory.Exists(configPath))
+            if (CheckConfigFile())
             {
-                _cfgFile = new List<string>(File.ReadAllLines(_cfgFilePath));
+                settings = new Settings();
             }
-            else
-            {
-                MessageBox.Show($"ERROR: Cannot read directory\n{configPath}\nDo you have Rigs of Rods 2020.xx installed?", "Sim-Monsters Anti Cheat");
-            }
-
-            LoadSettings();
         }
 
-        public void LoadSettings()
+        /// <summary>
+        /// Gets or sets Sim-Monsters API Server URI.
+        /// </summary>
+        public string SmApiServer
         {
-            if (File.Exists(_jsonSettingsFile))
+            get => settings.SmApiServer;
+
+            set => settings.SmApiServer = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Sim-Monsters API Server is selected.
+        /// </summary>
+        public bool IsSmServerSelected
+        {
+            get => settings.IsSmServerSelected;
+
+            set => settings.IsSmServerSelected = value;
+        }
+
+        /// <inheritdoc cref="Config.CheckConfigFile"/>
+        public bool CheckConfigFile()
+        {
+            try
             {
-                try
+                if (config.CheckConfigFile())
                 {
-                    string json = File.ReadAllText(_jsonSettingsFile);
-                    settings = JsonConvert.DeserializeObject<Settings>(json);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("ERROR: Cannot read contents of settings.json.  Resetting to default.", "Sim-Monsters Anti Cheat");
-                    CreateDefaultSettings();
-                }
-                finally
-                {
-                    bool isValidApiServer = Uri.TryCreate(settings.smApiServer, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-                    if (!isValidApiServer)
-                    {
-                        MessageBox.Show("ERROR: Cannot verify valid API Server. Resetting to default.", "Sim-Monsters Anti Cheat");
-                        settings.smApiServer = _smApiServer;
-                    }
+                    return true;
                 }
             }
-            else
+            catch (FileNotFoundException)
             {
-                MessageBox.Show("ERROR: Cannot read contents of settings.json.  Resetting to default.", "Sim-Monsters Anti Cheat");
-                CreateDefaultSettings();
+                throw;
             }
-        }
-
-        public void CreateDefaultSettings()
-        {
-            settings = new Settings()
+            catch (DirectoryNotFoundException)
             {
-                smApiServer = _smApiServer,
-                smApiServerActive = false
-            };
-            SaveSettings();
-        }
-
-        public void SaveSettings()
-        {
-            string json = JsonConvert.SerializeObject(settings);
-            File.WriteAllText(_jsonSettingsFile, json);
-            MessageBox.Show("Saved settings to settings.json", "Sim-Monsters Anti Cheat");
-        }
-
-        public bool ApplyChanges()
-        {
-            bool changesAppliedSuccessfully = false;
-
-            // Only apply changes if RoR is not open!
-            if (Process.GetProcessesByName("RoR").Length == 0)
-            {
-                int apiServerIndex = _cfgFile.FindIndex(x => x.Contains("Online API URL="));
-                int apiEnableIndex = _cfgFile.FindIndex(x => x.Contains("Disable Online API="));
-                int enableRacesIndex = _cfgFile.FindIndex(x => x.Contains("Races="));
-
-                string currentApiServer = (settings.smApiServerActive ? settings.smApiServer : _rorApiServer);
-                _cfgFile[apiServerIndex] = $"Online API URL={currentApiServer}";
-                _cfgFile[apiEnableIndex] = _enableOnlineApi;
-                _cfgFile[enableRacesIndex] = _enableRaces;
-
-                File.WriteAllLines(_cfgFilePath, _cfgFile);
-
-                string currentApiServerName = (settings.smApiServerActive ? "Sim-Monsters Anti Cheat" : "Rigs of Rods API");
-                MessageBox.Show($"API Server changed to {currentApiServerName}.\nAPI and races have been enabled.", "Sim-Monsters Anti Cheat");
-                changesAppliedSuccessfully = true;
+                throw;
             }
-            else
-            {
-                MessageBox.Show("ERROR: Cannot apply changes while Rigs of Rods is open!\nClose Rigs of Rods before applying changes!", "Sim-Monsters Anti Cheat");
-            }
-            return changesAppliedSuccessfully;
+
+            return false;
         }
 
-        public bool SwitchServers(bool isSMApiServer)
+        /// <inheritdoc cref="Config.ApplyChanges(string)"/>
+        public bool ApplyConfigChanges()
         {
-            settings.smApiServerActive = isSMApiServer;
-            bool changesApplied = ApplyChanges();
-            if (changesApplied)
+            try
             {
-                SaveSettings();
-            }
-            return changesApplied;
-        }
-    }
+                string currentApiServer = IsSmServerSelected ? SmApiServer : rorApiServer;
 
-    public class Settings
-    {
-        public string smApiServer { get; set; }
-        public bool smApiServerActive { get; set; }
+                if (config.ApplyChanges(currentApiServer))
+                {
+                    return true;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                throw;
+            }
+
+            return false;
+
+            // bool isSuccessful = false;
+            // try
+            // {
+            //    isSuccessful = config.ApplyChanges(currentApiServer);
+            // }
+            // catch (FileNotFoundException ex)
+            // {
+            //    MessageBox.Show($"ERROR: Cannot read file\n{ex.Message}\nDo you have Rigs of Rods 2020.xx installed?", "Sim-Monsters Anti Cheat");
+            //    Debug.WriteLine(ex);
+            // }
+            // catch (DirectoryNotFoundException ex)
+            // {
+            //    MessageBox.Show($"ERROR: Cannot read directory\n{ex.Message}\nDo you have Rigs of Rods 2020.xx installed?", "Sim-Monsters Anti Cheat");
+            //    Debug.WriteLine(ex);
+            // }
+            // catch (RoRRunningException ex)
+            // {
+            //    MessageBox.Show("ERROR: Cannot apply changes while Rigs of Rods is open!\nClose Rigs of Rods before applying changes!", "Sim-Monsters Anti Cheat");
+            //    Debug.WriteLine(ex);
+            // }
+            // finally
+            // {
+            //    if (isSuccessful)
+            //    {
+            //        MessageBox.Show($"API Server changed to {currentApiServer}.\nAPI and races have been enabled.", "Sim-Monsters Anti Cheat");
+            //    }
+            // }
+        }
+
+        /// <inheritdoc cref="Settings.LoadSettingsFile()"/>
+        public bool LoadSettingsFile()
+        {
+            try
+            {
+                if (settings.LoadSettingsFile())
+                {
+                    return true;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+
+            return false;
+
+            // if (!settings.LoadSettingsFile())
+            // {
+            //    MessageBox.Show("ERROR: Cannot read contents of settings.json.  Resetting to default.", "Sim-Monsters Anti Cheat");
+            // }
+        }
+
+        /// <inheritdoc cref="Settings.SaveSettingsFile()"/>
+        public void SaveSettingsFile()
+        {
+            settings.SaveSettingsFile();
+
+            // if (settings.SaveSettingsFile())
+            // {
+            //    MessageBox.Show("Saved settings to settings.json", "Sim-Monsters Anti Cheat");
+            // }
+        }
     }
 }
