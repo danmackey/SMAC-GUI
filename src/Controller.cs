@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SMAC
 {
@@ -103,7 +104,7 @@ namespace SMAC
                     return true;
                 }
             }
-            catch (FileNotFoundException)
+            catch (Exception)
             {
                 throw;
             }

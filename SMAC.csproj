@@ -10,6 +10,7 @@
     <Authors>Danny Mackey</Authors>
     <Company></Company>
     <StartupObject></StartupObject>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

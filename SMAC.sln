@@ -13,13 +13,37 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|x64.Build.0 = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Debug|x86.Build.0 = Debug|Any CPU
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|ARM.Build.0 = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|ARM64.Build.0 = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x64.ActiveCfg = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x64.Build.0 = Release|Any CPU
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x86.ActiveCfg = Release|x86
+		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -49,7 +49,6 @@ namespace SMAC
 
         /// <summary>
         /// Checks if settings.json exists in active directory.
-        /// If it does not, a default file is created.
         /// </summary>
         /// <returns>True if file exits, throws exception if file does not exist.</returns>
         /// <exception cref="FileNotFoundException" />
@@ -61,7 +60,6 @@ namespace SMAC
             }
             else
             {
-                CreateDefaultSettingsFile();
                 throw new FileNotFoundException("Cannot find settings.json.\nCreating default file.");
             }
         }
@@ -69,7 +67,7 @@ namespace SMAC
         /// <summary>
         /// Attempts to load settings.json, deserialize it, and set the current
         /// Sim-Monsters API Server URI to <see cref="SmApiServer"/>.
-        /// If settings.json cannot be found, default settings will be applied.
+        /// If settings.json cannot be found, the file will be created default settings will be applied.
         /// </summary>
         /// <returns>
         /// True if the file loaded successfully and completed,
@@ -89,15 +87,11 @@ namespace SMAC
             }
             catch (FileNotFoundException)
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
                 CreateDefaultSettingsFile();
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
             return false;
