@@ -7,6 +7,9 @@
     <ApplicationIcon>resources\SMAC.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
     <AssemblyName>SMAC</AssemblyName>
+    <Authors>Danny Mackey</Authors>
+    <Company></Company>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
