@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMAC", "SMAC.csproj", "{E65EB6EC-80D0-44E0-8E49-339702CBE35F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMAC", "SMAC\SMAC.csproj", "{E65EB6EC-80D0-44E0-8E49-339702CBE35F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5A162E5-0A6C-432C-B72D-FF4AF97896B9}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SMACInstaller", "SMACInstaller\SMACInstaller.wixproj", "{F8605702-EB26-44D7-87AE-C7A112B2C796}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,18 @@ Global
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x64.Build.0 = Release|Any CPU
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x86.ActiveCfg = Release|x86
 		{E65EB6EC-80D0-44E0-8E49-339702CBE35F}.Release|x86.Build.0 = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|ARM.ActiveCfg = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|ARM64.ActiveCfg = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|x64.ActiveCfg = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|x86.ActiveCfg = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Debug|x86.Build.0 = Debug|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|Any CPU.ActiveCfg = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|ARM.ActiveCfg = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|ARM64.ActiveCfg = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|x64.ActiveCfg = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|x86.ActiveCfg = Release|x86
+		{F8605702-EB26-44D7-87AE-C7A112B2C796}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

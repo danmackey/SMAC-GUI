@@ -79,7 +79,6 @@
             <StatusBarItem Content="{Binding CurrentServerMessage, FallbackValue='Connected to:'}" />
             <Separator />
             <StatusBarItem Content="{Binding CurrentServerUrl, FallbackValue='API Server URL: '}" />
-            <Separator />
             <StatusBarItem HorizontalAlignment="Right">
                 <ProgressBar
                     Width="100"
