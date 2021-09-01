@@ -84,12 +84,12 @@ namespace SMAC
                 }
                 else
                 {
-                    throw new FileNotFoundException($"File does not exist:\n{configPath}\\RoR.cfg\n\nDo you have Rigs of Rods 2020.xx installed?\n");
+                    throw new FileNotFoundException($"File does not exist:\n{configPath}\\RoR.cfg\n\nDo you have Rigs of Rods 202x.xx installed?\n");
                 }
             }
             else
             {
-                throw new DirectoryNotFoundException($"Directory does not exist:\n{configPath}\n\nDo you have Rigs of Rods 2020.xx installed?\n");
+                throw new DirectoryNotFoundException($"Directory does not exist:\n{configPath}\n\nDo you have Rigs of Rods 202x.xx installed?\n");
             }
         }
 

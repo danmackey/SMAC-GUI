@@ -9,7 +9,7 @@
            UpgradeCode="25526254-9bd1-4e99-b59b-17d1815ca1da">
     <Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
     <MediaTemplate EmbedCab="yes" />
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [Product Name] is already installed."
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [\[]Product Name[\]] is already installed."
                   AllowDowngrades="no" />
 
     <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)Resources\bannrbmp.bmp" />
