@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SMAC_TargetDir=$(var.SMAC.TargetDir)?>
+  <?define PRODNAME="Sim-Monsters Anti Cheat"?>
   <?define VERSION=!(bind.FileVersion.SMAC.exe)?>
   <?define PRODNAME="Sim-Monsters Anti Cheat?>
 
@@ -17,11 +18,13 @@
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Resources\SMAC.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
+    <Property Id="AppVer" Value="$(var.VERSION)" />
+
     <Feature Id="ProductFeature" Title="SMACInstaller" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="StartMenuComponents" />
       <ComponentGroupRef Id="DesktopComponents" />
-      <ComponentRef Id="SMAC.exe" />
+      <!--<ComponentRef Id="SMAC.exe" />
       <ComponentRef Id="SMAC.runtimeconfig.json" />
       <ComponentRef Id="SMAC.dll" />
       <ComponentRef Id="SMAC.pdb" />
@@ -33,7 +36,7 @@
       <ComponentRef Id="SharpVectors.Css.dll" />
       <ComponentRef Id="SharpVectors.Runtime.Wpf.dll" />
       <ComponentRef Id="ApplicationShortcut" />
-      <ComponentRef Id="ApplicationShortcutDesktop" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />-->
     </Feature>
 
     <!-- Directory Structure -->
@@ -93,6 +96,7 @@
               Source="$(var.SMAC_TargetDir)SharpVectors.Runtime.Wpf.dll" />
       </Component>
     </ComponentGroup>
+
     <ComponentGroup Id="StartMenuComponents" Directory="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="330bf627-04e5-4ef9-aa38-798fb27dd12d">
         <Shortcut Id="ApplicationStartMenuShortcut" Name="Sim-Monsters Anti Cheat Tool"
@@ -103,6 +107,7 @@
                        Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
+
     <ComponentGroup Id="DesktopComponents" Directory="DesktopFolder">
       <Component Id="ApplicationShortcutDesktop" Guid="cbaa4923-b72b-4274-9ea6-9b5c8c79ab65">
         <Shortcut Id="ApplicationDesktopShortcut" Name="Sim-Monsters Anti Cheat Tool"
@@ -112,6 +117,7 @@
         <RegistryValue Root="HKCU" Key="Software/SMAC" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
+
     <UI />
     <UIRef Id="WixUI_Minimal" />
   </Product>
