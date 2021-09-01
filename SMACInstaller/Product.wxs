@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SMAC_TargetDir=$(var.SMAC.TargetDir)?>
-  <?define PRODNAME="Sim-Monsters Anti Cheat"?>
   <?define VERSION=!(bind.FileVersion.SMAC.exe)?>
-  <?define PRODNAME="Sim-Monsters Anti Cheat?>
+  <?define PRODNAME=Sim-Monsters Anti Cheat Tool?>
 
-  <Product Id="*" Name="SMACInstaller" Language="1033" Version="1.0.0.0" Manufacturer="Danny Mackey"
+  <Product Id="*" Name="SMAC Installer" Language="1033" Version="1.0.0.0" Manufacturer="Danny Mackey"
            UpgradeCode="25526254-9bd1-4e99-b59b-17d1815ca1da">
     <Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
     <MediaTemplate EmbedCab="yes" />
@@ -14,15 +13,16 @@
 
     <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)Resources\bannrbmp.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)Resources\dlgbmp.bmp" />
-
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Resources\SMAC.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <Property Id="AppVer" Value="$(var.VERSION)" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
-    <Feature Id="ProductFeature" Title="SMACInstaller" Level="1">
+    <Feature Id="ProductFeature" Title="SMAC Installer" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="StorageComponents" />
+      <ComponentGroupRef Id="ProgramDataComponents" />
       <ComponentGroupRef Id="StartMenuComponents" />
       <ComponentGroupRef Id="DesktopComponents" />
     </Feature>
@@ -35,9 +35,12 @@
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="Sim-Monsters" />
+        <!--<Directory Id="ApplicationProgramsFolder" Name="Sim-Monsters" />-->
       </Directory>
       <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="StorageFolder" Name="Sim-Monsters" />
+      </Directory>
     </Directory>
 
     <!-- Included Files -->
@@ -85,20 +88,38 @@
       </Component>
     </ComponentGroup>
 
-    <ComponentGroup Id="StartMenuComponents" Directory="ApplicationProgramsFolder">
+    <!-- Storage Files -->
+    <ComponentGroup Id="StorageComponents" Directory="StorageFolder">
+      <Component Id="smac_settings.json" Guid="6d1e1e66-fa69-4ec6-9645-0f5a5554b323">
+        <File Id="smac_settings.json" Name="smac_settings.json"
+              Source="$(var.SMAC_TargetDir)/src/smac_settings.json" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Storage Folder -->
+    <ComponentGroup Id="ProgramDataComponents" Directory="StorageFolder">
+      <Component Id="ProgramDataStorage" Guid="">
+        <RemoveFolder Id="StorageFolder" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Start Menu Folder -->
+    <ComponentGroup Id="StartMenuComponents" Directory="ProgramMenuFolder">
       <Component Id="ApplicationShortcut" Guid="330bf627-04e5-4ef9-aa38-798fb27dd12d">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="Sim-Monsters Anti Cheat Tool"
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.PRODNAME)"
                   Description="Switch to and from Sim-Monsters Anti Cheat API Server for Rigs of Rods."
                   Target="[#SMAC.exe]" WorkingDirectory="INSTALLFOLDER" />
-        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RemoveFolder Id="CleanUpShortCut" Directory="ProgramMenuFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\SMAC" Name="installed" Type="integer"
                        Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
+    <!-- Desktop Shortcut -->
     <ComponentGroup Id="DesktopComponents" Directory="DesktopFolder">
       <Component Id="ApplicationShortcutDesktop" Guid="cbaa4923-b72b-4274-9ea6-9b5c8c79ab65">
-        <Shortcut Id="ApplicationDesktopShortcut" Name="Sim-Monsters Anti Cheat Tool"
+        <Condition>INSTALLDESKTOPSHORTCUT</Condition>
+        <Shortcut Id="ApplicationDesktopShortcut" Name="$(var.PRODNAME)"
                   Description="Switch to and from Sim-Monsters Anti Cheat API Server for Rigs of Rods."
                   Target="[#SMAC.exe]" WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="DesktopFolder" On="uninstall" />
@@ -106,19 +127,13 @@
       </Component>
     </ComponentGroup>
 
+    <CustomAction Id="StartAppOnExit" FileKey="SMAC.exe" ExeCommand="" Execute="immediate" Impersonate="yes" Return="asyncNoWait" />
     <UI>
-      <!--<UIRef Id="WixUI_Minimal" />-->
-      <UIRef Id="WixUI_InstallDir" />
-      <Publish Dialog="WelcomeDlg"
-            Control="Next"
-            Event="NewDialog"
-            Value="InstallDirDlg"
-            Order="2">1</Publish>
-      <Publish Dialog="InstallDirDlg"
-            Control="Back"
-            Event="NewDialog"
-            Value="WelcomeDlg"
-            Order="2">1</Publish>
+      <Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+      <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch SMAC Tool when setup exits." />
+      <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+      <UIRef Id="SMAC_InstallDir" />
+      <Publish Dialog="SMACExitDialog" Control="Finish" Order="1" Event="DoAction" Value="StartAppOnExit">WIXUI_EXITDIALOGOPTIONALCHECKBOX AND NOT Installed</Publish>
     </UI>
   </Product>
 </Wix>

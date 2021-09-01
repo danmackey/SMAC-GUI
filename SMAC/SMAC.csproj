@@ -54,4 +54,10 @@
     <Resource Include="resources\SimMonstersLogo.png" />
     <Resource Include="resources\SMAC.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="src\smac_settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

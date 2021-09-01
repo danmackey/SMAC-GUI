@@ -13,7 +13,10 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <CompilerAdditionalOptions>light -ext WixUIExtension -cultures:en-us</CompilerAdditionalOptions>
+    <CompilerAdditionalOptions>
+    </CompilerAdditionalOptions>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -23,6 +26,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
+    <Compile Include="SMACExitDialog.wxs" />
+    <Compile Include="SMACInstallDirDlg.wxs" />
+    <Compile Include="SMAC_InstallDir.wxs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\bannrbmp.bmp" />

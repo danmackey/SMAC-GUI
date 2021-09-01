@@ -11,7 +11,8 @@ namespace SMAC
     /// </summary>
     internal class Settings
     {
-        private readonly string jsonSettingsFile = @"./settings.json";
+        private readonly string programDataStoragePath;
+        private readonly string jsonSettingsFilePath;
         private readonly string smApiServer = "http://35.222.111.224:3000";
         private readonly JsonSerializerOptions options;
 
@@ -22,6 +23,8 @@ namespace SMAC
         /// </summary>
         public Settings()
         {
+            programDataStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + @"\Sim-Monsters";
+            jsonSettingsFilePath = Path.Combine(programDataStoragePath + @"\smac_settings.json");
             options = new JsonSerializerOptions()
             {
                 WriteIndented = true,
@@ -52,15 +55,23 @@ namespace SMAC
         /// </summary>
         /// <returns>True if file exits, throws exception if file does not exist.</returns>
         /// <exception cref="FileNotFoundException" />
+        /// <exception cref="DirectoryNotFoundException" />
         public bool CheckSettingsFile()
         {
-            if (File.Exists(jsonSettingsFile))
+            if (Directory.Exists(programDataStoragePath))
             {
-                return true;
+                if (File.Exists(jsonSettingsFilePath))
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new FileNotFoundException("Cannot find settings.json.\nCreating default file.");
+                }
             }
             else
             {
-                throw new FileNotFoundException("Cannot find settings.json.\nCreating default file.");
+                throw new DirectoryNotFoundException($"Directory does not exist:\n{programDataStoragePath}");
             }
         }
 
@@ -74,6 +85,7 @@ namespace SMAC
         /// false if any exceptions are raised.
         /// </returns>
         /// <exception cref="FileNotFoundException" />
+        /// <exception cref="DirectoryNotFoundException" />
         public bool LoadSettingsFile()
         {
             try
@@ -89,6 +101,11 @@ namespace SMAC
             {
                 CreateDefaultSettingsFile();
             }
+            catch (DirectoryNotFoundException)
+            {
+                Directory.CreateDirectory(programDataStoragePath);
+                CreateDefaultSettingsFile();
+            }
             catch (Exception)
             {
                 throw;
@@ -102,7 +119,7 @@ namespace SMAC
         /// </summary>
         public void SaveSettingsFile()
         {
-            File.WriteAllText(jsonSettingsFile, Serialize());
+            File.WriteAllText(jsonSettingsFilePath, Serialize());
         }
 
         /// <summary>
@@ -137,9 +154,9 @@ namespace SMAC
         private string Serialize() => JsonSerializer.Serialize(settingsJson, options);
 
         /// <summary>
-        /// Converts contents of <see cref="jsonSettingsFile"/> into a <see cref="SettingsJson"/> object.
+        /// Converts contents of <see cref="jsonSettingsFilePath"/> into a <see cref="SettingsJson"/> object.
         /// </summary>
-        /// <returns><see cref="SettingsJson" /> representation of the <see cref="jsonSettingsFile"/>.</returns>
-        private SettingsJson Deserialize() => JsonSerializer.Deserialize<SettingsJson>(File.ReadAllText(jsonSettingsFile));
+        /// <returns><see cref="SettingsJson" /> representation of the <see cref="jsonSettingsFilePath"/>.</returns>
+        private SettingsJson Deserialize() => JsonSerializer.Deserialize<SettingsJson>(File.ReadAllText(jsonSettingsFilePath));
     }
 }

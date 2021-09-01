@@ -7,8 +7,8 @@
     <Item Key="" Value="INSTALLFOLDER" />
   </DirectoryMappings>
   <FileMappings />
-  <DeploySymbols>true</DeploySymbols>
-  <DeployLocalizations>true</DeployLocalizations>
+  <DeploySymbols>false</DeploySymbols>
+  <DeployLocalizations>false</DeployLocalizations>
   <DeployExternalLocalizations>true</DeployExternalLocalizations>
   <ExcludedProjectItems>-</ExcludedProjectItems>
 </Configuration>
