@@ -11,7 +11,7 @@ namespace SMAC
     /// </summary>
     internal class Settings
     {
-        private readonly string jsonSettingsFile = @".\settings.json";
+        private readonly string jsonSettingsFile = @"./settings.json";
         private readonly string smApiServer = "http://35.222.111.224:3000";
         private readonly JsonSerializerOptions options;
 
